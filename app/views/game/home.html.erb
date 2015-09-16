@@ -1,0 +1,28 @@
+<% content_for :javascript do %>  
+  <%= javascript_include_tag "game/game_home" %>
+<% end %>
+
+<div class="img-container text-center" id="mostra_gioco" >
+	<img id="immagine_indovinazoo" src="/images/indovinazoo_home.png" class="img-responsive" onclick="submitForm('g')" title="Clicca per giocare"/>
+	<div class="button_container">
+    <%= link_to "Guarda gli animali!", animali_path, class: "btn btn-success", alt: "Guarda gli animali!", title: "Guarda gli animali!", method: "post" %>
+    <a alt="Partita personalizzata" class="btn btn-warning" onclick="submitForm('s')" title="Partita personalizzata">Partita personalizzata</a>
+    <%= link_to "Guarda la classifica!", ranks_top5_path, class: "btn btn-success", alt: "Guarda la classifica!", title: "Guarda la classifica!" %>
+    
+  </div>
+</div>
+
+<div id="cambio_browser" style="display:none" >
+	Ci dispiace, ma il browser corrente non è adatto all'esecuzione di IndovinaZOO, noi ti consigliamo Chromium, Google Chrome o Mozilla Firefox.<br/>
+	Nota: per la versione Linux di Mozilla Firefox bisogna installare gstreamer0.10-plugins-ugly (controllare il nome del pacchetto per la propria distribuzione)<br/>
+</div>
+
+<%= form_tag("/quiz/1", id: "form_gioca", name: "gioca", method: "post") do %>
+  <%= hidden_field_tag "numeroquiz", "10" %>
+  <%= hidden_field_tag "timeout", "5" %>
+  <%= hidden_field_tag "livelloquiz", "0" %>
+  <%= hidden_field_tag "standard", "sì" %>
+<% end %>
+
+<%= form_tag("/settings", id: "form_settings", name: "settings", method: "post") do %>
+<% end %>

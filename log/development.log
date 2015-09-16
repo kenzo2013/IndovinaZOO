@@ -1,0 +1,827 @@
+  [1m[36m (169.4ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [1m[35m (199.8ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateRanks (20131122142127)
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36m (0.8ms)[0m  [1mCREATE TABLE "ranks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar(255), "score" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20131122142127"]]
+  [1m[36m (347.8ms)[0m  [1mcommit transaction[0m
+Migrating to CreateAnimals (20131202172043)
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36m (0.7ms)[0m  [1mCREATE TABLE "animals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "image" varchar(255), "cry" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.5ms)[0m  CREATE UNIQUE INDEX "index_animals_on_name" ON "animals" ("name")
+  [1m[36m (0.4ms)[0m  [1mCREATE UNIQUE INDEX "index_animals_on_image" ON "animals" ("image")[0m
+  [1m[35m (0.4ms)[0m  CREATE UNIQUE INDEX "index_animals_on_cry" ON "animals" ("cry")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20131202172043"]]
+  [1m[35m (356.4ms)[0m  commit transaction
+Migrating to CreateQuizzes (20131202190752)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "quizzes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "level" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20131202190752"]]
+  [1m[35m (269.3ms)[0m  commit transaction
+Migrating to RemoveOldFieldImageFromAnimals (20131202193610)
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.7ms)[0m  CREATE TEMPORARY TABLE "aanimals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "image" varchar(255), "cry" varchar(255), "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.4ms)[0m  [1mCREATE UNIQUE INDEX "tindex_aanimals_on_cry" ON "aanimals" ("cry")[0m
+  [1m[35m (0.3ms)[0m  CREATE UNIQUE INDEX "tindex_aanimals_on_image" ON "aanimals" ("image")
+  [1m[36m (0.5ms)[0m  [1mCREATE UNIQUE INDEX "tindex_aanimals_on_name" ON "aanimals" ("name")[0m
+  [1m[35m (0.2ms)[0m  SELECT * FROM "animals"
+  [1m[36m (0.5ms)[0m  [1mDROP TABLE "animals"[0m
+  [1m[35m (0.6ms)[0m  CREATE TABLE "animals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "cry" varchar(255), "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (21.3ms)[0m  [1mCREATE UNIQUE INDEX "index_animals_on_name" ON "animals" ("name")[0m
+  [1m[35m (0.2ms)[0m  CREATE UNIQUE INDEX "index_animals_on_cry" ON "animals" ("cry")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "aanimals"[0m
+  [1m[35m (0.2ms)[0m  DROP TABLE "aanimals"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20131202193610"]]
+  [1m[35m (186.1ms)[0m  commit transaction
+Migrating to AddImageUploaderToAnimals (20131202193659)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "animals" ADD "image" varchar(255)
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20131202193659"]]
+  [1m[35m (160.9ms)[0m  commit transaction
+Migrating to CreateQuizRows (20131203135523)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "quiz_rows" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "quiz_id" integer, "animal_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20131203135523"]]
+  [1m[35m (152.6ms)[0m  commit transaction
+Migrating to DeviseCreateAdminUsers (20140104095052)
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  CREATE TABLE "admin_users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar(255) DEFAULT '' NOT NULL, "encrypted_password" varchar(255) DEFAULT '' NOT NULL, "name" varchar(255), "surname" varchar(255), "email" varchar(255), "reset_password_token" varchar(255), "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar(255), "last_sign_in_ip" varchar(255), "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.4ms)[0m  [1mCREATE UNIQUE INDEX "index_admin_users_on_username" ON "admin_users" ("username")[0m
+  [1m[35m (0.3ms)[0m  CREATE UNIQUE INDEX "index_admin_users_on_reset_password_token" ON "admin_users" ("reset_password_token")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20140104095052"]]
+  [1m[35m (174.7ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+
+
+Started GET "/" for 127.0.0.1 at 2015-09-10 14:39:31 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by GameController#home as HTML
+  Rendered game/home.html.erb within layouts/application (201.0ms)
+  Rendered layouts/_header.html.erb (9.5ms)
+Completed 200 OK in 3082ms (Views: 3000.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/social-share-button.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/animals.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/game.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/main_page.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/bootstrap_and_overrides.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/ranks.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/social-share-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/quizzes.css?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-transition.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-alert.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-modal.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-dropdown.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-scrollspy.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tab.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tooltip.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-popover.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:35 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-carousel.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-collapse.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-typeahead.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-affix.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/twitter/bootstrap.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/jquery.iframe-transport.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/jquery.remotipart.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/management/init-ajax.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/management/quiz-management.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/management/animal-management.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started GET "/assets/game/game_home.js?body=1" for 127.0.0.1 at 2015-09-10 14:39:36 +0200
+
+
+Started POST "/quiz/1" for 127.0.0.1 at 2015-09-10 14:39:51 +0200
+Processing by GameController#quiz as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8=", "numeroquiz"=>"10", "timeout"=>"5", "livelloquiz"=>"0", "standard"=>"sì", "id"=>"1"}
+  [1m[35mQuiz Load (0.2ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 1
+  [1m[36mQuiz Load (0.2ms)[0m  [1mSELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 2[0m
+  [1m[35mQuiz Load (0.2ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 3
+Completed 500 Internal Server Error in 190ms
+
+NoMethodError - undefined method `animals' for nil:NilClass:
+  app/models/quiz.rb:107:in `block in random_quiz_array'
+  app/models/quiz.rb:106:in `random_quiz_array'
+  app/controllers/game_controller.rb:17:in `quiz'
+  actionpack (4.0.1) lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:189:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rendering.rb:10:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:403:in `_run__2891296638979074274__process_action__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:17:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rescue.rb:29:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `block in instrument'
+  activesupport (4.0.1) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `instrument'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/params_wrapper.rb:245:in `process_action'
+  activerecord (4.0.1) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:136:in `process'
+  actionpack (4.0.1) lib/abstract_controller/rendering.rb:44:in `process'
+  actionpack (4.0.1) lib/action_controller/metal.rb:195:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal.rb:231:in `block in action'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:80:in `dispatch'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:48:in `call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:71:in `block in call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:59:in `call'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:680:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+  rack-contrib (1.1.0) lib/rack/contrib/response_headers.rb:17:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/headers.rb:16:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+  warden (1.2.3) lib/warden/manager.rb:35:in `block in call'
+  warden (1.2.3) lib/warden/manager.rb:34:in `call'
+  rack (1.5.2) lib/rack/etag.rb:23:in `call'
+  rack (1.5.2) lib/rack/conditionalget.rb:35:in `call'
+  rack (1.5.2) lib/rack/head.rb:11:in `call'
+  remotipart (1.2.1) lib/remotipart/middleware.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/flash.rb:241:in `call'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:225:in `context'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:220:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/cookies.rb:486:in `call'
+  activerecord (4.0.1) lib/active_record/query_cache.rb:36:in `call'
+  activerecord (4.0.1) lib/active_record/connection_adapters/abstract/connection_pool.rb:626:in `call'
+  activerecord (4.0.1) lib/active_record/migration.rb:369:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:373:in `_run__1292156065911308228__call__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/reloader.rb:64:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:84:in `protected_app_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:79:in `better_errors_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:56:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.0.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `block in tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:25:in `tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `tagged'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.2) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.2) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.0.1) lib/active_support/cache/strategy/local_cache.rb:83:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/static.rb:64:in `call'
+  rack (1.5.2) lib/rack/sendfile.rb:112:in `call'
+  railties (4.0.1) lib/rails/engine.rb:511:in `call'
+  railties (4.0.1) lib/rails/application.rb:97:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  rack (1.5.2) lib/rack/content_length.rb:14:in `call'
+  rack (1.5.2) lib/rack/handler/webrick.rb:60:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+
+Started POST "/__better_errors/54923520/variables" for 127.0.0.1 at 2015-09-10 14:39:51 +0200
+  [1m[36mQuiz Load (0.1ms)[0m  [1mSELECT "quizzes".* FROM "quizzes"[0m
+
+
+Started POST "/settings" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+Processing by GameController#settings as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8="}
+  [1m[35mQuiz Load (0.2ms)[0m  SELECT "quizzes".* FROM "quizzes"
+  Rendered game/settings.html.erb within layouts/application (53.1ms)
+  Rendered layouts/_header.html.erb (5.0ms)
+Completed 200 OK in 160ms (Views: 157.5ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/assets/social-share-button.css?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/social-share-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-alert.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-modal.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-transition.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-dropdown.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-scrollspy.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/game/game_settings.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tooltip.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-popover.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tab.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-collapse.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-carousel.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-typeahead.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-affix.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/jquery.iframe-transport.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+
+
+Started GET "/assets/jquery.remotipart.js?body=1" for 127.0.0.1 at 2015-09-10 14:40:00 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+
+
+Started GET "/" for 127.0.0.1 at 2015-09-10 14:44:14 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by GameController#home as HTML
+  Rendered game/home.html.erb within layouts/application (16.7ms)
+  Rendered layouts/_header.html.erb (11.9ms)
+Completed 200 OK in 233ms (Views: 224.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/social-share-button.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/bootstrap_and_overrides.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/animals.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/game.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/main_page.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/quizzes.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/ranks.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/social-share-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-transition.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-alert.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-modal.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-dropdown.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-scrollspy.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tab.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tooltip.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-popover.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-collapse.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-carousel.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-affix.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-typeahead.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/twitter/bootstrap.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/jquery.iframe-transport.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/jquery.remotipart.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/management/init-ajax.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/management/quiz-management.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/management/animal-management.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started GET "/assets/game/game_home.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:15 +0200
+
+
+Started POST "/quiz/1" for 127.0.0.1 at 2015-09-10 14:44:17 +0200
+Processing by GameController#quiz as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8=", "numeroquiz"=>"10", "timeout"=>"5", "livelloquiz"=>"0", "standard"=>"sì", "id"=>"1"}
+  [1m[35mQuiz Load (0.2ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 1
+  [1m[36mQuiz Load (0.2ms)[0m  [1mSELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 2[0m
+  [1m[35mQuiz Load (0.1ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 3
+Completed 500 Internal Server Error in 17ms
+
+NoMethodError - undefined method `animals' for nil:NilClass:
+  app/models/quiz.rb:107:in `block in random_quiz_array'
+  app/models/quiz.rb:106:in `random_quiz_array'
+  app/controllers/game_controller.rb:17:in `quiz'
+  actionpack (4.0.1) lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:189:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rendering.rb:10:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:403:in `_run__1233129206553423559__process_action__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:17:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rescue.rb:29:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `block in instrument'
+  activesupport (4.0.1) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `instrument'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/params_wrapper.rb:245:in `process_action'
+  activerecord (4.0.1) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:136:in `process'
+  actionpack (4.0.1) lib/abstract_controller/rendering.rb:44:in `process'
+  actionpack (4.0.1) lib/action_controller/metal.rb:195:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal.rb:231:in `block in action'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:80:in `dispatch'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:48:in `call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:71:in `block in call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:59:in `call'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:680:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+  rack-contrib (1.1.0) lib/rack/contrib/response_headers.rb:17:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/headers.rb:16:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+  warden (1.2.3) lib/warden/manager.rb:35:in `block in call'
+  warden (1.2.3) lib/warden/manager.rb:34:in `call'
+  rack (1.5.2) lib/rack/etag.rb:23:in `call'
+  rack (1.5.2) lib/rack/conditionalget.rb:35:in `call'
+  rack (1.5.2) lib/rack/head.rb:11:in `call'
+  remotipart (1.2.1) lib/remotipart/middleware.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/flash.rb:241:in `call'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:225:in `context'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:220:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/cookies.rb:486:in `call'
+  activerecord (4.0.1) lib/active_record/query_cache.rb:36:in `call'
+  activerecord (4.0.1) lib/active_record/connection_adapters/abstract/connection_pool.rb:626:in `call'
+  activerecord (4.0.1) lib/active_record/migration.rb:369:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:373:in `_run__115418607213688640__call__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/reloader.rb:64:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:84:in `protected_app_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:79:in `better_errors_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:56:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.0.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `block in tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:25:in `tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `tagged'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.2) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.2) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.0.1) lib/active_support/cache/strategy/local_cache.rb:83:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/static.rb:64:in `call'
+  rack (1.5.2) lib/rack/sendfile.rb:112:in `call'
+  railties (4.0.1) lib/rails/engine.rb:511:in `call'
+  railties (4.0.1) lib/rails/application.rb:97:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  rack (1.5.2) lib/rack/content_length.rb:14:in `call'
+  rack (1.5.2) lib/rack/handler/webrick.rb:60:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+
+Started POST "/__better_errors/70112826603660/variables" for 127.0.0.1 at 2015-09-10 14:44:17 +0200
+  [1m[36mQuiz Load (0.2ms)[0m  [1mSELECT "quizzes".* FROM "quizzes"[0m
+
+
+Started POST "/admin_users/sign_in" for 127.0.0.1 at 2015-09-10 14:44:30 +0200
+Processing by AdminUsers::SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8="}
+Completed 401 Unauthorized in 1ms
+Processing by AdminUsers::SessionsController#new as HTML
+  Parameters: {"authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8="}
+  Rendered admin_users/shared/_links.erb (1.3ms)
+  Rendered admin_users/sessions/new.html.erb within layouts/application (154.6ms)
+  Rendered layouts/_header.html.erb (4.9ms)
+Completed 200 OK in 202ms (Views: 189.9ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/assets/social-share-button.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/animals.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/bootstrap_and_overrides.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/game.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/main_page.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/quizzes.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/ranks.css?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/social-share-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-transition.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-alert.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-dropdown.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-modal.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-scrollspy.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tab.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-tooltip.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-popover.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-button.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-collapse.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-carousel.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-typeahead.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap/bootstrap-affix.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/twitter/bootstrap.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/jquery.iframe-transport.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/jquery.remotipart.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/management/init-ajax.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/management/quiz-management.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/management/animal-management.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2015-09-10 14:44:31 +0200
+
+
+Started POST "/quiz/1" for 127.0.0.1 at 2015-09-10 14:44:45 +0200
+Processing by GameController#quiz as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8=", "numeroquiz"=>"10", "timeout"=>"5", "livelloquiz"=>"0", "standard"=>"sì", "id"=>"1"}
+  [1m[35mQuiz Load (0.2ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 1
+  [1m[36mQuiz Load (0.1ms)[0m  [1mSELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 2[0m
+  [1m[35mQuiz Load (0.1ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 3
+Completed 500 Internal Server Error in 3ms
+
+NoMethodError - undefined method `animals' for nil:NilClass:
+  app/models/quiz.rb:107:in `block in random_quiz_array'
+  app/models/quiz.rb:106:in `random_quiz_array'
+  app/controllers/game_controller.rb:17:in `quiz'
+  actionpack (4.0.1) lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:189:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rendering.rb:10:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:403:in `_run__1233129206553423559__process_action__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:17:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rescue.rb:29:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `block in instrument'
+  activesupport (4.0.1) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `instrument'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/params_wrapper.rb:245:in `process_action'
+  activerecord (4.0.1) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:136:in `process'
+  actionpack (4.0.1) lib/abstract_controller/rendering.rb:44:in `process'
+  actionpack (4.0.1) lib/action_controller/metal.rb:195:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal.rb:231:in `block in action'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:80:in `dispatch'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:48:in `call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:71:in `block in call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:59:in `call'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:680:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+  rack-contrib (1.1.0) lib/rack/contrib/response_headers.rb:17:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/headers.rb:16:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+  warden (1.2.3) lib/warden/manager.rb:35:in `block in call'
+  warden (1.2.3) lib/warden/manager.rb:34:in `call'
+  rack (1.5.2) lib/rack/etag.rb:23:in `call'
+  rack (1.5.2) lib/rack/conditionalget.rb:35:in `call'
+  rack (1.5.2) lib/rack/head.rb:11:in `call'
+  remotipart (1.2.1) lib/remotipart/middleware.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/flash.rb:241:in `call'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:225:in `context'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:220:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/cookies.rb:486:in `call'
+  activerecord (4.0.1) lib/active_record/query_cache.rb:36:in `call'
+  activerecord (4.0.1) lib/active_record/connection_adapters/abstract/connection_pool.rb:626:in `call'
+  activerecord (4.0.1) lib/active_record/migration.rb:369:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:373:in `_run__115418607213688640__call__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/reloader.rb:64:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:84:in `protected_app_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:79:in `better_errors_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:56:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.0.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `block in tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:25:in `tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `tagged'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.2) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.2) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.0.1) lib/active_support/cache/strategy/local_cache.rb:83:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/static.rb:64:in `call'
+  rack (1.5.2) lib/rack/sendfile.rb:112:in `call'
+  railties (4.0.1) lib/rails/engine.rb:511:in `call'
+  railties (4.0.1) lib/rails/application.rb:97:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  rack (1.5.2) lib/rack/content_length.rb:14:in `call'
+  rack (1.5.2) lib/rack/handler/webrick.rb:60:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+
+Started POST "/__better_errors/70112893055500/variables" for 127.0.0.1 at 2015-09-10 14:44:45 +0200
+
+
+Started POST "/quiz/1" for 127.0.0.1 at 2015-09-10 14:44:53 +0200
+Processing by GameController#quiz as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"QKfqSX7X/QQ7MebIb/Cst8S8Clvfm75nMWFehQKvTu8=", "numeroquiz"=>"10", "timeout"=>"5", "livelloquiz"=>"0", "standard"=>"sì", "id"=>"1"}
+  [1m[36mQuiz Load (0.2ms)[0m  [1mSELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 1[0m
+  [1m[35mQuiz Load (0.1ms)[0m  SELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 2
+  [1m[36mQuiz Load (0.1ms)[0m  [1mSELECT "quizzes".* FROM "quizzes" WHERE "quizzes"."level" = 3[0m
+Completed 500 Internal Server Error in 3ms
+
+NoMethodError - undefined method `animals' for nil:NilClass:
+  app/models/quiz.rb:107:in `block in random_quiz_array'
+  app/models/quiz.rb:106:in `random_quiz_array'
+  app/controllers/game_controller.rb:17:in `quiz'
+  actionpack (4.0.1) lib/action_controller/metal/implicit_render.rb:4:in `send_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:189:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rendering.rb:10:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:18:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:403:in `_run__1233129206553423559__process_action__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/abstract_controller/callbacks.rb:17:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/rescue.rb:29:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:31:in `block in process_action'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `block in instrument'
+  activesupport (4.0.1) lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+  activesupport (4.0.1) lib/active_support/notifications.rb:159:in `instrument'
+  actionpack (4.0.1) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
+  actionpack (4.0.1) lib/action_controller/metal/params_wrapper.rb:245:in `process_action'
+  activerecord (4.0.1) lib/active_record/railties/controller_runtime.rb:18:in `process_action'
+  actionpack (4.0.1) lib/abstract_controller/base.rb:136:in `process'
+  actionpack (4.0.1) lib/abstract_controller/rendering.rb:44:in `process'
+  actionpack (4.0.1) lib/action_controller/metal.rb:195:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal/rack_delegation.rb:13:in `dispatch'
+  actionpack (4.0.1) lib/action_controller/metal.rb:231:in `block in action'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:80:in `dispatch'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:48:in `call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:71:in `block in call'
+  actionpack (4.0.1) lib/action_dispatch/journey/router.rb:59:in `call'
+  actionpack (4.0.1) lib/action_dispatch/routing/route_set.rb:680:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/app_request_handler.rb:13:in `call'
+  rack-contrib (1.1.0) lib/rack/contrib/response_headers.rb:17:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/headers.rb:16:in `call'
+  meta_request (0.2.8) lib/meta_request/middlewares/meta_request_handler.rb:13:in `call'
+  warden (1.2.3) lib/warden/manager.rb:35:in `block in call'
+  warden (1.2.3) lib/warden/manager.rb:34:in `call'
+  rack (1.5.2) lib/rack/etag.rb:23:in `call'
+  rack (1.5.2) lib/rack/conditionalget.rb:35:in `call'
+  rack (1.5.2) lib/rack/head.rb:11:in `call'
+  remotipart (1.2.1) lib/remotipart/middleware.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/params_parser.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/flash.rb:241:in `call'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:225:in `context'
+  rack (1.5.2) lib/rack/session/abstract/id.rb:220:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/cookies.rb:486:in `call'
+  activerecord (4.0.1) lib/active_record/query_cache.rb:36:in `call'
+  activerecord (4.0.1) lib/active_record/connection_adapters/abstract/connection_pool.rb:626:in `call'
+  activerecord (4.0.1) lib/active_record/migration.rb:369:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:29:in `block in call'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:373:in `_run__115418607213688640__call__callbacks'
+  activesupport (4.0.1) lib/active_support/callbacks.rb:80:in `run_callbacks'
+  actionpack (4.0.1) lib/action_dispatch/middleware/callbacks.rb:27:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/reloader.rb:64:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/remote_ip.rb:76:in `call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:84:in `protected_app_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:79:in `better_errors_call'
+  better_errors (1.1.0) lib/better_errors/middleware.rb:56:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/debug_exceptions.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/show_exceptions.rb:30:in `call'
+  railties (4.0.1) lib/rails/rack/logger.rb:38:in `call_app'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `block in call'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `block in tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:25:in `tagged'
+  activesupport (4.0.1) lib/active_support/tagged_logging.rb:67:in `tagged'
+  railties (4.0.1) lib/rails/rack/logger.rb:20:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/request_id.rb:21:in `call'
+  rack (1.5.2) lib/rack/methodoverride.rb:21:in `call'
+  rack (1.5.2) lib/rack/runtime.rb:17:in `call'
+  activesupport (4.0.1) lib/active_support/cache/strategy/local_cache.rb:83:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  actionpack (4.0.1) lib/action_dispatch/middleware/static.rb:64:in `call'
+  rack (1.5.2) lib/rack/sendfile.rb:112:in `call'
+  railties (4.0.1) lib/rails/engine.rb:511:in `call'
+  railties (4.0.1) lib/rails/application.rb:97:in `call'
+  rack (1.5.2) lib/rack/lock.rb:17:in `call'
+  rack (1.5.2) lib/rack/content_length.rb:14:in `call'
+  rack (1.5.2) lib/rack/handler/webrick.rb:60:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:138:in `service'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/httpserver.rb:94:in `run'
+  /home/eric/.rvm/rubies/ruby-2.0.0-p647/lib/ruby/2.0.0/webrick/server.rb:295:in `block in start_thread'
+
+
+
+Started POST "/__better_errors/70112898176900/variables" for 127.0.0.1 at 2015-09-10 14:44:53 +0200

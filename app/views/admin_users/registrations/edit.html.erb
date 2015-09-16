@@ -1,0 +1,31 @@
+<h2>Modifica Profilo</h2>
+
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :username, label: "Nome utente", :autofocus => true %>
+
+	<%= f.input :email, label: "Email" %>
+	<%= f.input :name, label: "Nome" %>
+	<%= f.input :surname, label: "Cognome" %>
+	
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+    <% end %>
+
+    <%= f.input :password, :label => "Nuova password", :autocomplete => "off", :hint => "Lasciala bianca se non vuoi cambiare la password." %>
+    <%= f.input :password_confirmation, :label => "Conferma password" %>
+    <%= f.input :current_password, :label => "Vecchia password", :hint => "Inserisci la vecchia password per confermare la modifica.", :required => true %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Modifica", class: "btn btn-success" %>
+  </div>
+<% end %>
+
+<h4>Elimina l'account</h4>
+
+<p><%= link_to "Elimina", registration_path(resource_name), :data => { :confirm => "Sei veramente sicuro?" }, :method => :delete, class: "btn btn-danger" %></p>
+
+<%= link_to "Torna alla Home", root_path, class: "btn btn-success" %>

@@ -1,0 +1,3 @@
+<td><%= link_to "Modifica", edit_animal_path(a), remote: true, class: "edit-animal" %></td>
+<td><%= link_to "Elimina", animal_path(a), method: :delete, data: { confirm: "Sei sicuro?" } %></td>	
+

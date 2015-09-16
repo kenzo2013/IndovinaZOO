@@ -1,0 +1,16 @@
+<div class="quiz-element" id="quiz-<%= quiz.id %>">
+  <span class="quiz-animals-names">
+    <div class="quiz-name"><%= quiz.animals.first.name %></div>
+    <div class="quiz-name"><%= quiz.animals.last.name %></div>
+  </span>
+  <span class="quiz-animals-images">
+    <span class="quiz-image"><%= image_tag quiz.animals.first.image_url %></span>
+    <span class="quiz-image"><%= image_tag quiz.animals.last.image_url %></span>
+  </span>
+  <div class="quiz-link pull-right">
+    <%= link_to "Dettagli", quiz %>
+    <%= link_to "Modifica", edit_quiz_path(quiz), remote: true, class: "edit-quiz" %>
+    <%= link_to "Elimina", quiz_path(quiz), remote: true, method: :delete, data: { confirm: "Sei sicuro?" } %>
+  </div>
+</div>
+

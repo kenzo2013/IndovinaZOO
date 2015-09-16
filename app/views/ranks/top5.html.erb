@@ -1,0 +1,25 @@
+<% content_for :javascript do %>  
+  <%= javascript_include_tag "game/game_home" %>
+<% end %>
+
+<div class="container">
+	<h1>
+		Top 5
+		<%= link_to "Torna a Home", root_path, class: "btn btn-success home-button" %>
+	</h1>
+
+	<div class="centered-table">
+		<table class="table table-striped">
+			<thead>
+				<tr><th class="column1">Posizione</th><th>Nickname</th><th>Punteggio</th></tr>	
+			</thead>
+			<tbody>
+				<% @ranks.each_with_index do |rank, position| %>
+					<tr>
+						<td class="column1"><%= position+1 %></td><td><%= rank.nickname%></td><td><%= rank.score%></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>

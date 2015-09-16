@@ -1,0 +1,27 @@
+<h2>Dettagli del quiz '<%= @quiz.id %>'</h2>
+
+<p>
+	<strong>Quiz ID:</strong>
+	<%= @quiz.id %>
+</p>
+
+<p>
+	<strong>Livello:</strong>
+		<%= @quiz.level %>
+</p>
+
+
+	<strong>Animali:</strong>
+	<br/>
+	<% @quiz.animals.each do |animal| %>		
+		<table>
+			<tr>
+				<%= animal.name %>
+				<td><%= image_tag animal.image_url, size: "150x120" %></td>
+			</tr>
+		</table>
+	<% end %>
+	<br/>
+
+<%= link_to "Modifica", edit_quiz_path(@quiz), class: "btn btn-success" %>
+<%= link_to "Torna a Gestione Quiz", quizzes_path, class: "btn btn-success" %>

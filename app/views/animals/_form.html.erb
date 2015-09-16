@@ -1,0 +1,14 @@
+<%= simple_form_for @animal, remote: (params[:action] == 'new' ? true : false), authenticity_token: true, html: { multipart: true, id: 'animal_form' } do |f| %>
+	
+	<div id="animalform_error_messages"></div>
+			
+	<fieldset class="form-new-animal">
+		<legend>Dati nuovo animale:</legend>
+    <div class="animal-input"><%= f.input :name, label: "Nome" %></div>
+    <div class="animal-input"><%= f.input :image, label: "Immagine", as: :file %></div>
+		<div class="animal-input"><%= f.input :cry, label: "Verso", as: :file %></div>		
+	</fieldset>		
+		
+	<%= f.button :submit, value: (params[:action] == 'new' ? "Crea Animale" : "Modifica Animale"), class: "btn btn-success"%>
+
+<% end %>

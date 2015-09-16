@@ -1,0 +1,39 @@
+<div class="container" id="header-container">
+  <div class="pull-left" id="img-header-container"">
+    <%= link_to image_tag( 'img_header_cb.png', class: "img-responsive"), root_path %>
+  </div>
+  <div class="col-md-3 pull-right">
+  	<div class="loginbar-text">
+  		<% if admin_user_signed_in? %>
+	  		Loggato come <strong><%= current_admin_user.username %></strong>.
+        <div class="dropdown">
+		      <button class="btn btn-success dropdown-toggle sr-only" type="button" data-toggle="dropdown">
+		        Opzioni Amministratore
+		      </button>
+          <ul class="dropdown-menu pull-right login-menu" role="menu">
+            <li role="presentation" class="dropdown-header">Gestione Gioco<li>
+            <li role="presentation">
+              <%= link_to "Gestione Animali", animals_path, class: "loginbar-link", role: "menuitem", tabindex: "-1" %>
+            </li>
+            <li role="presentation">
+              <%= link_to "Gestione Quiz", quizzes_path, class: "loginbar-link", role: "menuitem", tabindex: "-1" %>
+            </li>
+            <li role="presentation" class="dropdown-header">Gestione Utenti<li>
+            <li role="presentation">
+              <%= link_to "Modifica profilo", edit_admin_user_registration_path, class: "loginbar-link", role: "menuitem", tabindex: "-1" %>
+            </li>
+            <li role="presentation">
+              <%= link_to "Nuovo amministratore", new_admin_user_registration_path, class: "loginbar-link", role: "menuitem", tabindex: "-1" %>
+            </li>
+            <li role="presentation" class="divider"></li>
+            <li role="presentation">
+              <%= link_to "Logout", destroy_admin_user_session_path, method: :delete, class: "loginbar-link", role: "menuitem", tabindex: "-1" %>
+            </li>
+          </ul>
+        </div>
+		  <% else %>	
+			  <%= button_to "Area riservata", new_admin_user_session_path, class: "btn btn-success", id: "login-button" %>
+  		<% end %>
+    </div>
+  </div>
+</div>

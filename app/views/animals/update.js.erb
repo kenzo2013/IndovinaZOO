@@ -1,0 +1,3 @@
+$('#animalform_error_messages').empty();
+$('#flash_messages').html("<%= escape_javascript raw(flash_display) %>");
+$('#animal-<%= @animal.id %>').html("<%= escape_javascript(render @animal) %>");

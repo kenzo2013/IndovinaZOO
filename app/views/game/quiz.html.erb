@@ -1,0 +1,41 @@
+<% content_for :javascript do %>  
+  <%= javascript_include_tag "game/game_quiz" %>
+<% end %>
+
+<div class="quiz-title-container row">
+  <div class="quiz-title">
+    <h1 class="quiz-title-text">Quiz <%= params[:id] %></h1>
+    <%= link_to "Annulla Partita", root_path, data: {confirm: "Stai per uscire dalla partita! Sei sicuro?" }, class: "btn btn-success home-button"%>
+  </div>
+  <div class="quiz-result text-center">
+    <div id="risultato" ></div>
+    <div class="form-1">
+      <%= form_tag("/quiz/"+(params[:id].to_i+1).to_s, name: "prossimoquiz", method: "post") do %>
+        <%= hidden_field_tag "numeroquiz", params[:numeroquiz] %>
+        <%= hidden_field_tag "timeout", params[:timeout] %>
+        <%= hidden_field_tag "iniziato", "sì" %>
+        <%= hidden_field_tag "standard", params[:standard] %>
+        <%= submit_tag "Prossimo Quiz", style: "display:none", id: "prossimoquiztag", class: "btn btn-success" %>
+      <% end %>
+    </div>
+    <div class="form-2">
+      <%= form_tag("/result", name: "finequiz", method: "post") do %>
+        <%= hidden_field_tag "numeroquiz", params[:numeroquiz] %>
+        <%= hidden_field_tag "timeout", params[:timeout] %>
+        <%= hidden_field_tag "standard", params[:standard] %>
+        <%= submit_tag "Guarda il resoconto!", style: "display:none", id: "finequiztag", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div>
+  <span class="span6 offset3" id="pulsanti_quiz">
+    <button type="button" id="inizia" class="btn btn-success" name="inizia">Inizia il Quiz!</button>
+    <progress id="barra_avanzamento" value="1000" max="1000"></progress>Tempo: <span id="valore_avanzamento"><%= params[:timeout].to_i %>s</span>
+	  <button type="button" style="display:none" id="salta" class="btn btn-success" name="salta" >Salta risposta</button>	  
+  </span>
+  <div id="elementiquiz"></div>
+</div>
+

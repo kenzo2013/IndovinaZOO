@@ -1,0 +1,3 @@
+$('#quizform_error_messages').empty();
+$('#flash_messages').html("<%= escape_javascript raw(flash_display) %>");
+$('#quiz-<%= @quiz.id %>').html("<%= escape_javascript(render @quiz) %>");

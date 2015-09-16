@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IndovinaZOO</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= include_gon %>
+  <%= yield :javascript %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<%= render 'layouts/header' %>
+  <div id="flash_messages" class="custom-alert">
+    <h5>
+   	  <% flash.each do |key, value| %>	      
+	  	  <%= content_tag :div, value, id: "flash_#{key}" %>
+	  <% end %> 
+    </h5>
+  </div>
+
+  <div class="container" id="external-container">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+    	<%= yield %>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+	
+  <footer></footer>
+</body>
+</html>

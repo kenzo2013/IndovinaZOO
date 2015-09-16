@@ -1,0 +1,36 @@
+<h2>Dettagli di <%= @animal.name %></h2>
+<p>
+	<strong>Nome:</strong>
+	<%= @animal.name %>
+</p>
+
+<p>
+	
+	<%= image_tag @animal.image_url, size: "640x480" %><br>	
+</p>
+
+<% if admin_user_signed_in? %>
+<p>
+		<strong>Nome del file immagine:</strong>
+<%= @animal.image_identifier %>
+</p>
+<% end %>
+	 
+<p>	
+	<strong>Verso:</strong>
+		<%= audio_tag @animal.cry_url, controls: true %>
+</p>
+
+<% if admin_user_signed_in? %>
+<p>
+	<strong>Nome del file audio:</strong>
+	<%= @animal.cry_identifier %>
+</p>
+<% end %>
+
+<% if admin_user_signed_in? %>
+  <%= link_to "Modifica", edit_animal_path(@animal), class: "btn btn-success" %>
+  <%= link_to "Torna a Gestione", animals_path, class: "btn btn-success" %>
+<% else %>
+  <%= link_to "Torna a Elenco", animals_path, class: "btn btn-success" %>
+<% end %>

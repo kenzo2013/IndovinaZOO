@@ -1,0 +1,2 @@
+$("#flash_messages").html("<%= escape_javascript raw(flash_display) %>");
+$("#quiz-<%= @quiz.id %>").remove();

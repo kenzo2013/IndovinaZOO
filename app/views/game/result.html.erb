@@ -1,0 +1,38 @@
+<% content_for :javascript do %>  
+  <%= javascript_include_tag "game/game_result" %>
+<% end %>
+
+<h1>
+  Riepilogo Partita
+  <%= link_to "Torna alla Home", root_path, class: "btn btn-success home-button"%>
+</h1>
+
+<div id="result_summary">
+</div>
+
+<div id="total_result_summary">
+	<h3 id="total_score">
+	Punteggio Totale:
+		<span id="change_total_score">
+		</span>
+	</h3>
+
+	<div id="social">
+		Condividi il risultato con i tuoi amici:
+		<%= social_share_button_tag("", :url => "www.indovinazoo.it") %>
+	</div>
+
+	<% if params[:standard] == "sì" %>
+		<button type="button" onclick="showForm()" id="save-rank" class="btn btn-success">Salva in classifica</button>
+		<div style="display:none" id="hidden_form">
+			<%= simple_form_for @rank, :url => url_for(:action => 'create', :controller => 'ranks'),
+				:method => 'post' do |f| %>
+				<%= f.input :nickname %>
+				<%= f.input :score, :as => :hidden, :input_html => { :id => "hidden_score" } %>
+				<%= f.button :submit, value: "Inserisci punteggio", class: "btn btn-success" %>
+			<% end %>
+		</div>
+	<% else %>
+		<div style="display:none" id="hidden_score"></div>
+	<% end %>
+</div>

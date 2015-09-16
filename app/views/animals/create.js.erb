@@ -1,0 +1,5 @@
+<% if remotipart_submitted? %>	
+	$('#flash_messages').html("<%= escape_javascript raw(flash_display) %>");
+	$('#element-list').append("<%= escape_javascript(render @animal) %>");		
+	$(":input:not(input[type=submit])").val("");	
+<% end %>

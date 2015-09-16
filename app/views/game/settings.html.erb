@@ -1,0 +1,44 @@
+<% content_for :javascript do %>  
+  <%= javascript_include_tag "game/game_settings" %>
+<% end %>
+
+<div class="container-settings">
+	<h1 id="settings-title">Preferenze partita 	<%= link_to "Torna alla Home", root_path, class: "btn btn-success home-button"%></h1>
+
+	<%= form_tag("/quiz/1", id:"settings" , method: "post") do %>
+  <div class="table-responsive">
+		<table border="0" id="table-settings">
+			<tr>
+			<td>
+				<%= label_tag "numeroquiz", "Numero quiz." %>
+			</td>
+			<td>
+				<%= number_field_tag "numeroquiz", 1, min: 1, class: "number-field" %>
+			</td>
+			</tr>
+			<tr>
+			<td>
+				<%= label_tag "timeout", "Timeout per quiz." %>
+			</td>
+			<td>
+				<%= number_field_tag "timeout", 5, min: 1, class: "number-field" %>
+			</td>
+			</tr>
+			<tr>
+			<td>
+				<%= label_tag "livelloquiz", "Livello per tutti i quiz. " %>
+        <small class="italic">se 0 il livello sarà casuale.<small>
+			</td>
+			<td>
+				<%= number_field_tag "livelloquiz", 0 , min: 0, class: "number-field" %>
+			</td>
+			</tr>
+		</table>
+
+    <small class="note">nota: utilizzando le preferenze personalizzate non potrai registrare il punteggio nella classifica</small>
+
+	<%= hidden_field_tag "standard", "no" %>
+	<% end %>
+  </div>
+	<a href="javascript:submitForm()" type="button" class="btn btn-success settings-button">... Adesso Gioca!</a>
+</div>

@@ -1,0 +1,13 @@
+<div class="animal-element" id="animal-<%= animal.id %>" title="Clicca per sentire il verso">
+  <div class="animal-name" onclick="document.getElementById('<%= animal.name %>_sound').play()"><%= animal.name %></div>
+  <%= image_tag animal.image_url, class: "img_animal_list img-circle", onclick: "document.getElementById('"+animal.name+"_sound').play()" %>
+  <%= audio_tag animal.cry_url, id: animal.name+"_sound" %>
+  <div class="animal-link" onclick=prevent_default>
+    <% if admin_user_signed_in? %>
+      <%= link_to "Dettagli", animal %>
+    <% else %>
+      <%= link_to "Guarda Animale", animal %>
+    <% end %>
+    <%= render 'animal_admin_commands', a: animal if admin_user_signed_in? %>
+  </div>
+</div>

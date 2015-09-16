@@ -1,0 +1,6 @@
+$("#quiz_quiz_rows_attributes_1_animal_id").empty();
+$("#quiz_quiz_rows_attributes_1_animal_id").append($("<option></option>").attr("value","").text("Seleziona un animale"));
+
+<% for animal in @animals %>
+	$("#quiz_quiz_rows_attributes_1_animal_id").append($("<option></option>").attr("value",<%=animal.id %>).text("<%= animal.name %>"));
+<% end %>

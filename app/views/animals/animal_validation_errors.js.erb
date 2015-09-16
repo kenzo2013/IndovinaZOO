@@ -1,0 +1,11 @@
+$errorDiv = $('#animalform_error_messages');
+$errorDiv.empty();
+
+$errorDiv.append("<h4>Sono stati riscontrati i seguenti errori:</h4>");
+
+$errorList = $('<ul>');
+<% @animal.errors.full_messages.each do |msg| %>
+	$errorList.append("<li><%= escape_javascript msg %></li>");
+<% end %>	
+$errorList.append('</ul>');
+$errorDiv.append($errorList);

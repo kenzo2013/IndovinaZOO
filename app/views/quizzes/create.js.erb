@@ -1,0 +1,4 @@
+$('quizform_error_messages').empty();
+$('#flash_messages').html("<%= escape_javascript raw(flash_display) %>");
+$('#element-list').append("<%= escape_javascript(render @quiz) %>");		
+$(":input:not(input[type=submit])").val("");	
